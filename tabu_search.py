@@ -1,11 +1,8 @@
 import numpy as np
 from collections import deque
-from time import time
 
 n_fvals = 0
 best_fval_history = []
-timestamps = []
-start_time = 0
 
 
 def update_stm(stm, x, stm_size):
@@ -206,20 +203,16 @@ def tabu_search(x, obj_func, n, bounds=(-2, 2), step_size=0.1, n_sectors=10,
     
     except MaxFuncEvaluationsExceeded:
         history['best_fval'] = best_fval_history.copy()
-        history['timestamps'] = timestamps.copy()
         return best_x, best_fval, history
 
     history['best_fval'] = best_fval_history.copy()
-    history['timestamps'] = timestamps.copy()
     return best_x, best_fval, history
 
 
 def reset():
     global n_fvals, start_time
     n_fvals = 0
-    start_time = time()
     best_fval_history.clear()
-    timestamps.clear()
 
 
 def shubert(x):
@@ -254,7 +247,7 @@ if __name__ == '__main__':
     # example code
     n = 5
     x = np.random.uniform(-2, 2, size=n)
-    max_n_fvals = 1e4
+    max_n_fvals = 5e4
     obj_func = lambda x: shubert_with_count(x, max_n_fvals)
 
     best_x, best_fval, history = \
@@ -263,4 +256,4 @@ if __name__ == '__main__':
                 stm_size=26, mtm_size=4, ssr_factor=0.8, explored_thresh=10,
                 epsilon=1e-9, max_n_fvals=max_n_fvals)
     
-    print(best_fval)
+    print(best_fval, best_x)

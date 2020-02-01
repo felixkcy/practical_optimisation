@@ -4,8 +4,6 @@ from time import time
 
 n_fvals = 0
 best_fval_history = []
-timestamps = []
-start_time = 0
 
 
 def recombination(X, method='discrete', n_offspring=140):
@@ -33,7 +31,7 @@ def discrete_recombination(X, n_offspring=140):
         parent1, parent2 = np.random.randint(population, size=2)
         while parent1 == parent2:
             parent2 = np.random.randint(population)
-        # randomly determine which parent contribute to which component
+        # randomly determine which parent contributes to which component
         coin_tosses = np.random.choice([True, False], n)
 
         # recombine
@@ -200,20 +198,16 @@ def evolution_strategy(obj_func, n, population=140, n_parents=20, s0=0.1,
 
     except MaxFuncEvaluationsExceeded:
         history['best_fval'] = best_fval_history.copy()
-        history['timestamps'] = timestamps.copy()
         return best_x, best_fval, history
 
     history['best_fval'] = best_fval_history.copy()
-    history['timestamps'] = timestamps.copy()
     return best_x, best_fval, history
     
 
 def reset():
     global n_fvals, start_time
     n_fvals = 0
-    start_time = time()
     best_fval_history.clear()
-    timestamps.clear()
 
 
 def shubert(x):
@@ -257,4 +251,4 @@ if __name__ == '__main__':
                            select_parents=False, mutate_angles=False,
                            max_n_fvals=1e4)
 
-    print(best_fval)
+    print(best_fval, best_x)
